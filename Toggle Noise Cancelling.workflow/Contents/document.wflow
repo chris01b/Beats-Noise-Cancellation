@@ -51,7 +51,8 @@
 				<key>ActionParameters</key>
 				<dict>
 					<key>source</key>
-					<string>if running of application "System Preferences" then	quit application "System Preferences"	delay 0.1end iftell application "System Preferences"	activateend telltell application "System Preferences"	reveal pane id "com.apple.preferences.Bluetooth"	tell application "System Events"		tell application process "System Preferences"			-- Wait until finished loading			repeat while title of item 1 of UI elements is "Loading Bluetooth…"			end repeat			tell window "Bluetooth"				-- Open options				click button "options" of UI element 1 of row 2 of table 1 of scroll area 1				-- Toggle noise cancellation				tell group 1 of sheet 1					if enabled of checkbox 1 is true then						click checkbox 0					else if enabled of checkbox 2 is true then						click checkbox 3					end if				end tell				click button "Done" of sheet 1			end tell		end tell		tell application "System Preferences" to quit	end tellend tell</string>
+					<string>if running of application "System Preferences" then	quit application "System Preferences"	delay 0.1end iftell application "System Preferences"	activateend telltell application "System Preferences"	reveal pane id "com.apple.preferences.Bluetooth"	tell application "System Events"		tell application process "System Preferences"			-- Wait until finished loading			repeat while title of item 1 of UI elements is "Loading Bluetooth…"			end repeat			tell window "Bluetooth"				-- Open options				try					click button "options" of UI element 1 of row 2 of table 1 of scroll area 1				on error errStr number errorNumber					if the errorNumber is equal to -1728 then						display dialog "ERROR: Could not find options button.
+The headphones are possibly not connected."						error number -128					else						error errStr number errorNumber						error number -128					end if				end try				-- Toggle noise cancellation				try					tell group 1 of sheet 1						if enabled of checkbox 1 is true then							click checkbox 0						else if enabled of checkbox 2 is true then							click checkbox 3						end if					end tell					click button "Done" of sheet 1				on error errStr number errorNumber					if the errorNumber is equal to -1728 then						display dialog "ERROR: The headphones are possibly not supported"					else						error errStr number errorNumber					end if				end try			end tell		end tell		tell application "System Preferences" to quit	end tellend tell</string>
 				</dict>
 				<key>BundleIdentifier</key>
 				<string>com.apple.Automator.RunScript</string>
@@ -105,7 +106,7 @@ end run</string>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>499.500000:368.000000</string>
+				<string>499.500000:548.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run AppleScript.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
